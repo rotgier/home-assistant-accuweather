@@ -140,7 +140,7 @@ class AccuWeatherHourlyForecastDataUpdateCoordinator(
         """Update data via library."""
         try:
             async with timeout(10):
-                result = await self.accuweather.async_get_hourly_forecast(hours=36)
+                result = await self.accuweather.async_get_hourly_forecast()
         except EXCEPTIONS as error:
             raise UpdateFailed(error) from error
 
