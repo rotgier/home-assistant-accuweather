@@ -41,14 +41,14 @@ class AccuWeatherFlowHandler(ConfigFlow, domain=DOMAIN):
                         longitude=user_input[CONF_LONGITUDE],
                     )
                     await accuweather.async_get_location()
-                    if user_input[CONF_API_KEY_ADDITIONAL]:
-                        accuweather = AccuWeather(
-                            user_input[CONF_API_KEY_ADDITIONAL],
-                            websession,
-                            latitude=user_input[CONF_LATITUDE],
-                            longitude=user_input[CONF_LONGITUDE],
-                        )
-                        await accuweather.async_get_location()
+
+                    accuweather = AccuWeather(
+                        user_input[CONF_API_KEY_ADDITIONAL],
+                        websession,
+                        latitude=user_input[CONF_LATITUDE],
+                        longitude=user_input[CONF_LONGITUDE],
+                    )
+                    await accuweather.async_get_location()
             except (ApiError, ClientConnectorError, TimeoutError, ClientError):
                 errors["base"] = "cannot_connect"
             except InvalidApiKeyError:
@@ -69,7 +69,7 @@ class AccuWeatherFlowHandler(ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_API_KEY): str,
-                    vol.Optional(CONF_API_KEY_ADDITIONAL): str,
+                    vol.Required(CONF_API_KEY_ADDITIONAL): str,
                     vol.Optional(
                         CONF_LATITUDE, default=self.hass.config.latitude
                     ): cv.latitude,
