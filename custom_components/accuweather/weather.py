@@ -224,7 +224,6 @@ class AccuWeatherEntity(
                 ATTR_FORECAST_CLOUD_COVERAGE: item["CloudCover"],
                 ATTR_FORECAST_HUMIDITY: item["RelativeHumidity"],
                 ATTR_FORECAST_NATIVE_TEMP: item["Temperature"][ATTR_VALUE],
-                # ATTR_FORECAST_NATIVE_TEMP_LOW: item["TemperatureMin"][ATTR_VALUE],
                 ATTR_FORECAST_NATIVE_APPARENT_TEMP: item["RealFeelTemperature"][
                     ATTR_VALUE
                 ],
