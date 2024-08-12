@@ -14,9 +14,14 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, UPDATE_INTERVAL_DAILY_FORECAST, UPDATE_INTERVAL_OBSERVATION
+from .const import (DOMAIN,
+                    UPDATE_INTERVAL_DAILY_FORECAST,
+                    UPDATE_INTERVAL_HOURLY_FORECAST,
+                    UPDATE_INTERVAL_OBSERVATION,
+                    CONF_API_KEY_ADDITIONAL)
 from .coordinator import (
     AccuWeatherDailyForecastDataUpdateCoordinator,
+    AccuWeatherHourlyForecastDataUpdateCoordinator,
     AccuWeatherObservationDataUpdateCoordinator,
 )
 
@@ -31,6 +36,7 @@ class AccuWeatherData:
 
     coordinator_observation: AccuWeatherObservationDataUpdateCoordinator
     coordinator_daily_forecast: AccuWeatherDailyForecastDataUpdateCoordinator
+    coordinator_hourly_forecast: AccuWeatherHourlyForecastDataUpdateCoordinator
 
 
 type AccuWeatherConfigEntry = ConfigEntry[AccuWeatherData]
@@ -39,6 +45,7 @@ type AccuWeatherConfigEntry = ConfigEntry[AccuWeatherData]
 async def async_setup_entry(hass: HomeAssistant, entry: AccuWeatherConfigEntry) -> bool:
     """Set up AccuWeather as config entry."""
     api_key: str = entry.data[CONF_API_KEY]
+    api_key_additional: str = entry.data[CONF_API_KEY_ADDITIONAL]
     name: str = entry.data[CONF_NAME]
 
     location_key = entry.unique_id
@@ -47,6 +54,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AccuWeatherConfigEntry) 
 
     websession = async_get_clientsession(hass)
     accuweather = AccuWeather(api_key, websession, location_key=location_key)
+    accuweather_additional = AccuWeather(api_key_additional, websession, location_key=location_key)
 
     coordinator_observation = AccuWeatherObservationDataUpdateCoordinator(
         hass,
@@ -64,12 +72,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: AccuWeatherConfigEntry) 
         UPDATE_INTERVAL_DAILY_FORECAST,
     )
 
+    coordinator_hourly_forecast = AccuWeatherHourlyForecastDataUpdateCoordinator(
+        hass,
+        accuweather_additional,
+        name,
+        "hourly forecast",
+        UPDATE_INTERVAL_HOURLY_FORECAST,
+    )
+
     await coordinator_observation.async_config_entry_first_refresh()
     await coordinator_daily_forecast.async_config_entry_first_refresh()
+    await coordinator_hourly_forecast.async_config_entry_first_refresh()
 
     entry.runtime_data = AccuWeatherData(
         coordinator_observation=coordinator_observation,
         coordinator_daily_forecast=coordinator_daily_forecast,
+        coordinator_hourly_forecast=coordinator_hourly_forecast,
     )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

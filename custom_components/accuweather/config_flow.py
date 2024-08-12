@@ -16,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 
 from .const import DOMAIN
-from .const import API_KEY_ADDITIONAL
+from .const import CONF_API_KEY_ADDITIONAL
 
 
 class AccuWeatherFlowHandler(ConfigFlow, domain=DOMAIN):
@@ -41,9 +41,9 @@ class AccuWeatherFlowHandler(ConfigFlow, domain=DOMAIN):
                         longitude=user_input[CONF_LONGITUDE],
                     )
                     await accuweather.async_get_location()
-                    if user_input[API_KEY_ADDITIONAL]:
+                    if user_input[CONF_API_KEY_ADDITIONAL]:
                         accuweather = AccuWeather(
-                            user_input[API_KEY_ADDITIONAL],
+                            user_input[CONF_API_KEY_ADDITIONAL],
                             websession,
                             latitude=user_input[CONF_LATITUDE],
                             longitude=user_input[CONF_LONGITUDE],
@@ -69,7 +69,7 @@ class AccuWeatherFlowHandler(ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_API_KEY): str,
-                    vol.Optional(API_KEY_ADDITIONAL): str,
+                    vol.Optional(CONF_API_KEY_ADDITIONAL): str,
                     vol.Optional(
                         CONF_LATITUDE, default=self.hass.config.latitude
                     ): cv.latitude,
