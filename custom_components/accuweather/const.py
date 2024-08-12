@@ -30,7 +30,7 @@ ATTR_ENGLISH: Final = "English"
 ATTR_LEVEL: Final = "level"
 ATTR_SPEED: Final = "Speed"
 ATTR_VALUE: Final = "Value"
-DOMAIN: Final = "accuweather"
+DOMAIN: Final = "accuweather_custom"
 MANUFACTURER: Final = "AccuWeather, Inc."
 MAX_FORECAST_DAYS: Final = 4
 

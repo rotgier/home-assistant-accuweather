@@ -1,5 +1,5 @@
 {
-  "domain": "accuweather",
+  "domain": "accuweather_custom",
   "name": "AccuWeather",
   "codeowners": ["@rotgier","@bieniu"],
   "config_flow": true,
