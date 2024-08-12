@@ -107,6 +107,48 @@ class AccuWeatherDailyForecastDataUpdateCoordinator(
         return result
 
 
+class AccuWeatherHourlyForecastDataUpdateCoordinator(
+    TimestampDataUpdateCoordinator[list[dict[str, Any]]]
+):
+    """Class to manage fetching AccuWeather data API."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        accuweather: AccuWeather,
+        name: str,
+        coordinator_type: str,
+        update_interval: timedelta,
+    ) -> None:
+        """Initialize."""
+        self.accuweather = accuweather
+        self.location_key = accuweather.location_key
+
+        if TYPE_CHECKING:
+            assert self.location_key is not None
+
+        self.device_info = _get_device_info(self.location_key, name)
+
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=f"{name} ({coordinator_type})",
+            update_interval=update_interval,
+        )
+
+    async def _async_update_data(self) -> list[dict[str, Any]]:
+        """Update data via library."""
+        try:
+            async with timeout(10):
+                result = await self.accuweather.async_get_hourly_forecast()
+        except EXCEPTIONS as error:
+            raise UpdateFailed(error) from error
+
+        _LOGGER.debug("Requests remaining: %d", self.accuweather.requests_remaining)
+
+        return result
+
+
 def _get_device_info(location_key: str, name: str) -> DeviceInfo:
     """Get device info."""
     return DeviceInfo(

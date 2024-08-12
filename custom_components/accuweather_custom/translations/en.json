@@ -12,6 +12,7 @@
             "user": {
                 "data": {
                     "api_key": "API key",
+                    "api_key_additional": "Additional API key for hourly weather forecast",
                     "latitude": "Latitude",
                     "longitude": "Longitude",
                     "name": "Name"

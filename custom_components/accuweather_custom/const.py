@@ -30,7 +30,7 @@ ATTR_ENGLISH: Final = "English"
 ATTR_LEVEL: Final = "level"
 ATTR_SPEED: Final = "Speed"
 ATTR_VALUE: Final = "Value"
-DOMAIN: Final = "accuweather"
+DOMAIN: Final = "accuweather_custom"
 MANUFACTURER: Final = "AccuWeather, Inc."
 MAX_FORECAST_DAYS: Final = 4
 
@@ -57,3 +57,6 @@ CONDITION_MAP = {
 }
 UPDATE_INTERVAL_OBSERVATION = timedelta(minutes=40)
 UPDATE_INTERVAL_DAILY_FORECAST = timedelta(hours=6)
+UPDATE_INTERVAL_HOURLY_FORECAST = timedelta(minutes=40)
+
+CONF_API_KEY_ADDITIONAL: Final = "api_key_additional"
