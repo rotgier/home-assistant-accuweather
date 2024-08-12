@@ -57,3 +57,5 @@ CONDITION_MAP = {
 }
 UPDATE_INTERVAL_OBSERVATION = timedelta(minutes=40)
 UPDATE_INTERVAL_DAILY_FORECAST = timedelta(hours=6)
+
+API_KEY_ADDITIONAL: Final = "api_key_additional"

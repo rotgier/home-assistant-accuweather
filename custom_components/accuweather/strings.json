@@ -5,6 +5,7 @@
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
           "api_key": "[%key:common::config_flow::data::api_key%]",
+          "api_key_additional": "Additional api key for hourly weather forecast",
           "latitude": "[%key:common::config_flow::data::latitude%]",
           "longitude": "[%key:common::config_flow::data::longitude%]"
         }
